@@ -1,0 +1,12 @@
+- Improve frontend response
+- Anlayse the Score ICAP and st,sc,ss as I > C > A > P. s-s>s-t=s-c (USP)
+- Compare against benchmarks(UC berkley,stanford TLC) & chatGPT and show how it is saving time for faculty
+
+- Method highlight (with proof of concept for CS)
+
+- Vision for future
+
+
+- Helps to adopt Better methods of teaching
+- Impact on how many number of faculty (IUCEE CS dept)
+
