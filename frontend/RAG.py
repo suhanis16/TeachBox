@@ -2,7 +2,7 @@ import os
 from langchain.chat_models import ChatOpenAI
 
 # os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY") or "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"
-os.environ["OPENAI_API_KEY"] = "sk-proj-xwOIM7KlzYrhH9WN7mGIT3BlbkFJo5G3a3UZtdsOEutudTWI"
+os.environ["OPENAI_API_KEY"] = "sk-proj-OvcHu8buv4qw8kwGrddJT3BlbkFJxLzwiD1Zt1u5XkXJY0e4"
 
 
 chat = ChatOpenAI(
