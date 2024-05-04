@@ -2,7 +2,7 @@ import os
 from langchain.chat_models import ChatOpenAI
 
 # os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY") or "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"
-os.environ["OPENAI_API_KEY"] = "sk-proj-OvcHu8buv4qw8kwGrddJT3BlbkFJxLzwiD1Zt1u5XkXJY0e4"
+os.environ["OPENAI_API_KEY"] = "sk-proj-bJWhMFLr5gB8BP8ZpdbsT3BlbkFJz2v6DKCqiogYsdMEUDQR"
 
 
 chat = ChatOpenAI(
@@ -55,6 +55,10 @@ class CustomDataset:
             "S-C": self.data.iloc[idx]['S-C'],
             "S-S": self.data.iloc[idx]['S-S'],
             "S-T": self.data.iloc[idx]['S-T'],
+            "I": self.data.iloc[idx]['I'],
+            "C": self.data.iloc[idx]['C'],
+            "A": self.data.iloc[idx]['A'],
+            "P": self.data.iloc[idx]['P'], 
             "ICAP": self.data.iloc[idx]['ICAP'],
             "A,S": self.data.iloc[idx]['A,S'],
             "Steps to try in Sandbox": self.data.iloc[idx]['Steps to try in Sandbox']
@@ -125,7 +129,8 @@ for i in tqdm(range(0, len(dataset), batch_size)):
              {batch['Objective'][i]} {batch['Resources'][i]} {batch['Citation'][i]} \
              {batch['Course Structure'][i]} {batch['Method'][i]} {batch['Class size'][i]} \
              {batch['Findings'][i]} {batch['S-C'][i]} {batch['S-S'][i]} \
-             {batch['S-T'][i]} {batch['ICAP'][i]} {batch['A,S'][i]} \
+             {batch['S-T'][i]} {batch['I'][i]} {batch['C'][i]} {batch['A'][i]} {batch['P'][i]} \
+             {batch['ICAP'][i]} {batch['A,S'][i]} \
              {batch['Steps to try in Sandbox'][i]}" for i in range(len(batch['Major']))]
 
     # embed text
@@ -146,6 +151,10 @@ for i in tqdm(range(0, len(dataset), batch_size)):
         'S-C': str(batch['S-C'][i]),  # Convert to string
         'S-S': str(batch['S-S'][i]),  # Convert to string
         'S-T': str(batch['S-T'][i]),  # Convert to string
+        'I': str(batch['I'][i]),  # Convert to string
+        'C': str(batch['C'][i]),  # Convert to string
+        'A': str(batch['A'][i]),  # Convert to string
+        'P': str(batch['P'][i]),  # Convert to string
         'ICAP': str(batch['ICAP'][i]),  # Convert to string
         'A,S': str(batch['A,S'][i]),  # Convert to string
         'Steps to try in Sandbox': str(batch['Steps to try in Sandbox'][i]),  # Convert to string
@@ -168,7 +177,8 @@ vectorstore = Pinecone(
 query = "How can I teach Mechanical engineering using Active Learning"  # Replace "your_query_here" with the actual query
 vectorstore.similarity_search(query, k=5)
 
-def augment_prompt(query: str):
+def augment_prompt(user_input: str):
+    '''
     # get top 3 results from knowledge base
     results = vectorstore.similarity_search(query, k=3)
     # get the text from the results
@@ -180,7 +190,21 @@ def augment_prompt(query: str):
     {source_knowledge}
 
     Query: {query}"""
-    return augmented_prompt
+    '''
+    results = vectorstore.similarity_search(user_input, k=5)
+
+    # Filter and sort results based on 'S-S', 'S-C', and 'S-T'
+    sorted_results = sorted(results, key=lambda x: (x.metadata['S-S'], x.metadata['S-C'], x.metadata['S-T']))
+
+    # Extract and format top 5 responses
+    formatted_responses = [f"{i+1}. {result.metadata['Major']} - {result.metadata['Pedagogy Technique']}\n{result.metadata['Definition']}\n{result.metadata['Objective']}\n\n" for i, result in enumerate(sorted_results[:5])]
+
+    # Combine responses into a single string
+    response_text = "\n".join(formatted_responses)
+
+    # Return the formatted response
+    return response_text
+    #return augmented_prompt
 
 # Replace this with your actual chatbot interaction function
 def interact_with_chatbot(user_input):
