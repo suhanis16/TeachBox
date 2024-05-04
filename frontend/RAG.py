@@ -2,7 +2,7 @@ import os
 from langchain.chat_models import ChatOpenAI
 
 # os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY") or "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"
-os.environ["OPENAI_API_KEY"] = "sk-proj-bJWhMFLr5gB8BP8ZpdbsT3BlbkFJz2v6DKCqiogYsdMEUDQR"
+os.environ["OPENAI_API_KEY"] = "sk-proj-obYKgjgxQea4tIjy7gCjT3BlbkFJsbhBvEEiMo3yhpi1Qcbg"
 
 
 chat = ChatOpenAI(
@@ -26,7 +26,7 @@ res = chat(messages)
 
 import pandas as pd
 
-df = pd.read_excel(r"D:\TeachBox\Active Learning Repo.xlsx")  # Assuming your data is in an Excel file
+df = pd.read_excel(r"D:\TeachBox\TeachBox\Active Learning Repo.xlsx")  # Assuming your data is in an Excel file
 
 import pandas as pd
 from datasets import Dataset
@@ -177,8 +177,9 @@ vectorstore = Pinecone(
 query = "How can I teach Mechanical engineering using Active Learning"  # Replace "your_query_here" with the actual query
 vectorstore.similarity_search(query, k=5)
 
-def augment_prompt(user_input: str):
-    '''
+
+def augment_prompt(query: str):
+    
     # get top 3 results from knowledge base
     results = vectorstore.similarity_search(query, k=3)
     # get the text from the results
@@ -190,7 +191,8 @@ def augment_prompt(user_input: str):
     {source_knowledge}
 
     Query: {query}"""
-    '''
+
+    '''#######################################
     results = vectorstore.similarity_search(user_input, k=5)
 
     # Filter and sort results based on 'S-S', 'S-C', and 'S-T'
@@ -204,7 +206,9 @@ def augment_prompt(user_input: str):
 
     # Return the formatted response
     return response_text
-    #return augmented_prompt
+###########################################
+    '''
+    return augmented_prompt
 
 # Replace this with your actual chatbot interaction function
 def interact_with_chatbot(user_input):
