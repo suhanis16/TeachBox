@@ -9,9 +9,9 @@ from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.prompts import ChatPromptTemplate
 from langchain.chains import create_retrieval_chain
 from langchain_community.vectorstores import FAISS
-import time
 from dotenv import load_dotenv
 from pathlib import Path
+from web_links import web_links
 
 dotenv_path = Path('../secrets.env')
 load_dotenv(dotenv_path=dotenv_path)
@@ -30,8 +30,7 @@ if "show_cards" not in st.session_state:
 
 if "vector" not in st.session_state:
     st.session_state.embeddings = OllamaEmbeddings(model="llama3.2")
-    st.session_state.loader = WebBaseLoader(
-        web_paths=["https://teaching.tools/activities"])
+    st.session_state.loader = WebBaseLoader(web_paths=web_links)
     st.session_state.docs = st.session_state.loader.load()
 
     st.session_state.text_splitter = RecursiveCharacterTextSplitter(
@@ -45,12 +44,16 @@ if "vector" not in st.session_state:
 llm = ChatGroq(groq_api_key=groq_api_key, model_name="mixtral-8x7b-32768")
 prompt_template = ChatPromptTemplate.from_template(
     """
-    Answer the questions based on the provided context only.
-    Please provide the most accurate response based on the question
+    You are a specialized educational chatbot designed to assist STEM educators in selecting effective active learning pedagogies tailored to their unique teaching conditions (e.g., subject matter, level of students, class size, time of day).
+    Respond to each question using only the information provided in the context.
+    Ensure responses are highly accurate and relevant to the educator's conditions.
+    Offer specific examples of recommended pedagogies and methods, customized to the given context. Specify the recommended duration and suggested order for implementing each pedagogy or method.
+
     <context>
     {context}
     <context>
-    Questions: {input}
+    
+    Question: {input}
     """
 )
 document_chain = create_stuff_documents_chain(llm, prompt_template)
@@ -70,8 +73,10 @@ def run_chatbot(query):
             for doc in response["context"]:
                 source = doc.metadata['source']
                 if source not in seen_sources:  # Check for duplicates
-                    st.write("Title: " + doc.metadata['title'])
-                    st.write("Description: " + doc.metadata['description'])
+                    if doc.metadata['title']:
+                        st.write("Title: " + doc.metadata['title'])
+                    if doc.metadata['description']:
+                        st.write("Description: " + doc.metadata['description'])
                     st.write("Link: " + source)
                     st.write("--------------------------------")
                     seen_sources.add(source)  # Add source to the set
