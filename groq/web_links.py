@@ -105,4 +105,16 @@ web_links = [
     "https://blogs.baruch.cuny.edu/activelearning/database-universe-mix-and-match-computer-information-systems/",
     "https://blogs.baruch.cuny.edu/activelearning/think-pair-share-with-clickers/",
     "https://blogs.baruch.cuny.edu/activelearning/a-group-research-project-in-6-parts/",
+    "https://teaching.cornell.edu/resource/getting-started-moving-lecture-outside-classroom",
+    "https://teaching.cornell.edu/resource/getting-started-designing-group-work-assignments",
+    "https://cei.umn.edu/teaching-resources/active-learning",
+    "https://ctal.udel.edu/resources-2/lat/",
+    "https://cft.vanderbilt.edu/guides-sub-pages/active-learning/", 
+    "https://itali.uq.edu.au/teaching-guidance/teaching-practices/active-learning/project-based-learning", 
+    "https://itali.uq.edu.au/teaching-guidance/teaching-practices/active-learning/case-scenario-problem-inquiry-based-learning", 
+    "https://itali.uq.edu.au/teaching-guidance/teaching-practices/active-learning/reflective-learning", 
+    "https://itali.uq.edu.au/teaching-guidance/teaching-practices/active-learning/collaborative-learning", 
+    "https://itali.uq.edu.au/teaching-guidance/teaching-practices/active-learning/experiential-learning", 
+    "https://itali.uq.edu.au/teaching-guidance/teaching-practices/active-learning/class-active-learning-activities", 
+    
 ]
